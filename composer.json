@@ -1,0 +1,13 @@
+{
+  "name": "yucheng0610/smsbao",
+  "type": "library",
+  "license": "MIT",
+  "description": "Webman plugin yucheng0610/smsbao",
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Yucheng0610\\Smsbao\\": "src"
+    }
+  }
+}

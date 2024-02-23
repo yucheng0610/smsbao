@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>浏览页面</title>
+    <link rel="stylesheet" href="/app/admin/component/pear/css/pear.css" />
+    <link rel="stylesheet" href="/app/admin/admin/css/reset.css" />
+</head>
+<body class="pear-container">
+<div class="layui-card">
+    <div class="layui-card-body">
+
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">模板設置</li>
+                <li permission="app.smsbao.admin.setting.save">賬號設置</li>
+                <li permission="app.smsbao.admin.setting.test">短信測試</li>
+            </ul>
+            <div class="layui-tab-content">
+                <!-- 模版设置 -->
+                <div class="layui-tab-item layui-show">
+                    <!-- 顶部查询表单 -->
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <form class="layui-form top-search-from">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">模板名稱</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="name" value="" class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item layui-inline">
+                                    <label class="layui-form-label"></label>
+                                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="table-query">
+                                        <i class="layui-icon layui-icon-search"></i>查詢
+                                    </button>
+                                </div>
+                                <div class="toggle-btn">
+                                    <a class="layui-hide">展開<i class="layui-icon layui-icon-down"></i></a>
+                                    <a class="layui-hide">收起<i class="layui-icon layui-icon-up"></i></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- 数据表格 -->
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <table id="data-table" lay-filter="data-table"></table>
+                        </div>
+                    </div>
+
+                    <!-- 表格顶部工具栏 -->
+                    <script type="text/html" id="table-toolbar">
+                        <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add" permission="app.smsbao.admin.setting.insertTemplate">
+                            <i class="layui-icon layui-icon-add-1"></i>新增模板
+                        </button>
+                        <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove" permission="app.smsbao.admin.setting.deleteTemplate">
+                            <i class="layui-icon layui-icon-delete"></i>刪除模板
+                        </button>
+                    </script>
+
+                    <!-- 表格行工具栏 -->
+                    <script type="text/html" id="table-bar">
+                        <button class="pear-btn pear-btn-xs tool-btn" lay-event="edit" permission="app.smsbao.admin.setting.updateTemplate">編輯</button>
+                        <button class="pear-btn pear-btn-xs tool-btn" lay-event="test" permission="app.smsbao.admin.setting.testTemplate">測試</button>
+                        <button class="pear-btn pear-btn-xs tool-btn" lay-event="remove" permission="app.smsbao.admin.setting.deleteTemplate">刪除</button>
+                    </script>
+
+                </div>
+
+                <!-- 短信设置 -->
+                <div class="layui-tab-item">
+
+                    <form class="layui-form" onsubmit="return false" lay-filter="setting" style="width: 520px">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="text" name="amount" autocomplete="off" placeholder="配置后顯示餘額" class="layui-input" disabled>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">短信標識</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="smsname" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">賬號</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="username"  autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">密碼</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="password" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">開啓SSL</label>
+                            <div class="layui-input-block">
+                                <select name="smtpSecure" lay-search>
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit="" lay-filter="saveSetting">
+                                    保存
+                                </button>
+                                <button type="reset" class="pear-btn pear-btn-md">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- 邮件测试 -->
+                <div class="layui-tab-item">
+
+                    <form class="layui-form" onsubmit="return false" lay-filter="test" style="width: 520px">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">手機號</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="mobile" required  lay-verify="required" placeholder="國際號碼格式：+886999999999" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit="" lay-filter="sendSms">
+                                    發送
+                                </button>
+                                <button type="reset" class="pear-btn pear-btn-md">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="/app/admin/component/layui/layui.js"></script>
+<script src="/app/admin/component/pear/pear.js"></script>
+<script src="/app/admin/admin/js/permission.js"></script>
+<script src="/app/admin/admin/js/common.js"></script>
+
+
+<!-- 模版设置 -->
+<script>
+
+    // 相关接口
+    const SELECT_API = "/app/smsbao/admin/setting/selectTemplate";
+    const UPDATE_API = "/app/smsbao/admin/setting/updateTemplate";
+    const DELETE_API = "/app/smsbao/admin/setting/deleteTemplate";
+    const INSERT_URL = "/app/smsbao/admin/setting/insertTemplate";
+    const UPDATE_URL = "/app/smsbao/admin/setting/updateTemplate";
+    const TEST_URL = "/app/smsbao/admin/setting/TestTemplate";
+
+    // 表格渲染
+    layui.use(["table", "form", "common", "popup"], function() {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.$;
+        let common = layui.common;
+
+        // 表头参数
+        let cols = [
+            {
+                type: "checkbox"
+            },{
+                title: "模板名稱",
+                field: "name",
+                width: 200,
+            },{
+                title: "模板標題",
+                field: "subject",
+            },{
+                title: "模板内容",
+                field: "content",
+            },{
+                title: "創建時間",
+                field: "created_at",
+                width: 180,
+                hide: true,
+            },{
+                title: "更新時間",
+                field: "updated_at",
+                width: 180,
+                hide: true,
+            },{
+                title: "操作",
+                toolbar: "#table-bar",
+                align: "center",
+                width: 180,
+                fixed: "right",
+            }
+        ];
+
+        // 渲染表格
+        function render()
+        {
+            table.render({
+                elem: "#data-table",
+                url: SELECT_API,
+                page: true,
+                cols: [cols],
+                skin: "line",
+                size: "lg",
+                toolbar: "#table-toolbar",
+                autoSort: false,
+                defaultToolbar: [{
+                    title: "刷新",
+                    layEvent: "refresh",
+                    icon: "layui-icon-refresh",
+                }, "filter", "print", "exports"]
+            });
+        }
+        render();
+
+        // 编辑或删除行事件
+        table.on("tool(data-table)", function(obj) {
+            switch (obj.event) {
+                case "remove":
+                    return remove(obj);
+                case "edit":
+                    return edit(obj);
+                case "test":
+                    return test(obj);
+            }
+        });
+
+        // 表格顶部工具栏事件
+        table.on("toolbar(data-table)", function(obj) {
+            if (obj.event === "add") {
+                add();
+            } else if (obj.event === "refresh") {
+                refreshTable();
+            } else if (obj.event === "batchRemove") {
+                batchRemove(obj);
+            }
+        });
+
+        // 表格顶部搜索事件
+        form.on("submit(table-query)", function(data) {
+            table.reload("data-table", {
+                where: data.field
+            })
+            return false;
+        });
+
+        // 表格顶部搜索重置事件
+        form.on("submit(table-reset)", function(data) {
+            table.reload("data-table", {
+                where: []
+            })
+        });
+
+        // 表格排序事件
+        table.on("sort(data-table)", function(obj){
+            table.reload("data-table", {
+                initSort: obj,
+                scrollPos: "fixed",
+                where: {
+                    field: obj.field,
+                    order: obj.type
+                }
+            });
+        });
+
+        // 表格新增数据
+        let add = function() {
+            layer.open({
+                type: 2,
+                title: "新增",
+                shade: 0.1,
+                area: [common.isModile()?"100%":"500px", common.isModile()?"100%":"450px"],
+                content: INSERT_URL
+            });
+        }
+
+        // 表格测试数据
+        let test = function(obj) {
+            let value = obj.data["name"];
+            layer.open({
+                type: 2,
+                title: "短信模板測試",
+                shade: 0.1,
+                area: [common.isModile()?"100%":"500px", common.isModile()?"100%":"450px"],
+                content: TEST_URL + "?name=" + value
+            });
+        }
+
+        // 表格编辑数据
+        let edit = function(obj) {
+            let value = obj.data["name"];
+            layer.open({
+                type: 2,
+                title: "修改",
+                shade: 0.1,
+                area: [common.isModile()?"100%":"500px", common.isModile()?"100%":"450px"],
+                content: UPDATE_URL + "?name=" + value
+            });
+        }
+
+        // 删除一行
+        let remove = function(obj) {
+            return doRemove(obj.data["name"]);
+        }
+
+        // 删除多行
+        let batchRemove = function(obj) {
+            let checkIds = common.checkField(obj, "name");
+            if (checkIds === "") {
+                layui.popup.warning("未选中数据");
+                return false;
+            }
+            doRemove(checkIds.split(","));
+        }
+
+        // 执行删除
+        let doRemove = function (ids) {
+            let data = {};
+            data["name"] = ids;
+            layer.confirm("确定删除?", {
+                icon: 3,
+                title: "提示"
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: DELETE_API,
+                    data: data,
+                    dataType: "json",
+                    type: "post",
+                    success: function(res) {
+                        layer.close(loading);
+                        if (res.code) {
+                            return layui.popup.failure(res.msg);
+                        }
+                        return layui.popup.success("操作成功", refreshTable);
+                    }
+                })
+            });
+        }
+
+        // 刷新表格数据
+        window.refreshTable = function(param) {
+            table.reloadData("data-table", {
+                scrollPos: "fixed"
+            });
+        }
+    })
+
+</script>
+
+
+<!--短信設置 短信测试 -->
+<script>
+    layui.use(["form", "popup"], function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        $.ajax({
+            url: "/app/smsbao/admin/setting/get",
+            success: function (res) {
+                if (res.code) {
+                    return layui.popup.failure(res.msg);
+                }
+                form.val("setting", res.data);
+                form.val("test", res.data);
+            }
+        });
+
+        // 保存设置
+        form.on("submit(saveSetting)", function(data){
+            $.ajax({
+                url: "/app/smsbao/admin/setting/save",
+                dataType: "json",
+                type: "POST",
+                data: data.field,
+                success: function (res) {
+                    if (res.code) {
+                        return layui.popup.failure(res.msg);
+                    }
+                    form.val("test", data.field);
+                    return layui.popup.success("操作成功");
+                }
+            });
+            return false;
+        });
+
+        // 测试表单
+        form.on("submit(sendSms)", function(data){
+            $.ajax({
+                url: "/app/smsbao/admin/setting/test",
+                dataType: "json",
+                type: "POST",
+                data: data.field,
+                success: function (res) {
+                    if (res.code) {
+                        return layui.popup.failure(res.msg);
+                    }
+                    return layui.popup.success("操作成功");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+<style>
+
+    .layui-input-block {
+        margin-left: 150px;
+    }
+
+    .layui-form-label {
+        width:120px;
+    }
+
+</style>
+</body>
+</html>
+
